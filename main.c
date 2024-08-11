@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "opcaoS.c"
+#include "opcaoC.c"
 
 int main(){
     char ch=' ';
@@ -11,7 +12,7 @@ Opcao: ");
         scanf(" %c", &ch);
         switch (ch){
             case 'C':
-                printf("Escolheu C\n");
+                opcaoC();
                 break;
             
             case 'S':
