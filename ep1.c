@@ -8,7 +8,7 @@ void converterParteInteira();
 void converterParteDecimal();
 void converterDecimal();
 
-int opcaoS();
+void opcaoS();
 int criterioLinhas();
 int criterioColunas();
 void metodoGaussSeidel();
@@ -16,7 +16,7 @@ void metodoGaussSeidel();
 int main(){
     char ch=' ';
     while(ch!='F'){
-        printf("Selecione uma das opcoes abaixo:\n 'C' - Conversao\n 'S' - Sistema Linear\n \
+        printf("\nSelecione uma das opcoes abaixo:\n 'C' - Conversao\n 'S' - Sistema Linear\n \
 'E' - Equacao Algebrica\n 'F' - Finalizar\n Opcao: ");
         scanf(" %c", &ch);
         switch (ch){
@@ -29,7 +29,7 @@ int main(){
                 break;
             
             case 'E':
-                printf("Escolheu E\n");
+                opcaoE();
                 break;
             
             case 'F':
@@ -125,7 +125,7 @@ void opcaoC() {
 
 
 
-int criterioLinhas(int n, int m[n][n]){
+int criterioLinhas(int n, double m[n][n]){
     /*  
         Essa funcao verifica se, para cada linha, o somatorio 
         dos valores absolutos dos elementos não diagonais da linha
@@ -137,7 +137,7 @@ int criterioLinhas(int n, int m[n][n]){
     */
     double sum;
     for(int i=0; i<n; i++){
-        sum=0;
+        sum=0.0;
         for(int j=0; j<n; j++){
             if(i!=j){
                 sum += fabs(m[i][j]);
@@ -150,7 +150,7 @@ int criterioLinhas(int n, int m[n][n]){
     return 1;
 }
 
-int criterioColunas(int n, int m[n][n]){
+int criterioColunas(int n, double m[n][n]){
     /*  
         Essa funcao verifica se, para cada coluna, o somatorio 
         dos valores absolutos dos elementos não diagonais da coluna
@@ -162,21 +162,20 @@ int criterioColunas(int n, int m[n][n]){
     */
     double sum;
     for(int j=0; j<n; j++){
-        sum=0;
+        sum=0.0;
         for(int i=0; i<n; i++){
             if(i!=j){
                 sum += fabs(m[i][j]);
             }
-        } 
-        if(fabs(m[j][j])<=sum){
+        }
+        if(sum-fabs(m[j][j])>0){
             return 0;
         }  
     }
     return 1;
 }
 
-int opcaoS() {
-
+void opcaoS() {
     FILE *f;
     char str[200];
     printf("Informe o nome do arquivo que contem o SL: \n");
@@ -185,18 +184,18 @@ int opcaoS() {
     f = fopen(str, "r");
     if (f == NULL) {
         printf("Erro ao abrir o arquivo.\n");
-        return 1;
+        return;
     }
 
     int n = getc(f)-'0';
-    int m_coef[n][n];
-    int v_ind[n];
+    double m_coef[n][n];
+    double v_ind[n];
 
     for(int i=0;i<n;i++){
         for(int j=0; j<n;j++){
-            fscanf(f,"%i", &m_coef[i][j]);
+            fscanf(f,"%lf", &m_coef[i][j]);
         }
-        fscanf(f,"%i", &v_ind[i]);
+        fscanf(f,"%lf", &v_ind[i]);
     }
     fclose(f);
 
@@ -214,10 +213,9 @@ int opcaoS() {
         metodoGaussSeidel(n, m_coef, v_ind);
     }
 
-    return 0;
 }
 
-void metodoGaussSeidel(int n, int m_coef[n][n], int v_ind[n]){
+void metodoGaussSeidel(int n, double m_coef[n][n], double v_ind[n]){
     /*  
         Essa funcao calcula uma solucao aproximada a partir do 
         Metodo de Gauss-Seidel e para quando atingi 1000 iteracoes
@@ -257,13 +255,10 @@ void metodoGaussSeidel(int n, int m_coef[n][n], int v_ind[n]){
             }
             sol[i]=val;
         }
-
         if(cond==n){break;}
     }
-
     printf("Numero de iteracoes: %i\n", ni);
     for(int i=0;i<n;i++){
         printf("%.4f ", sol[i]);
-    }
-    printf("\n");
+    } printf("\n");
 }
