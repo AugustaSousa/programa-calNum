@@ -1,3 +1,8 @@
+//Davi Coelho Maciel
+//Felipe Leo Cavalcante dos Santos
+//Bernardo Santos Maranhão Maia 
+//Maria Augusta Sousa Rios
+
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
